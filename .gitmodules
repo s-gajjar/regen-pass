@@ -4,3 +4,6 @@
 [submodule "sophon-poap/lib/forge-zksync-std"]
 	path = sophon-poap/lib/forge-zksync-std
 	url = https://github.com/Moonsong-Labs/forge-zksync-std
+[submodule "sophon-poap/lib/openzeppelin-foundry-upgrades"]
+	path = sophon-poap/lib/openzeppelin-foundry-upgrades
+	url = https://github.com/OpenZeppelin/openzeppelin-foundry-upgrades
