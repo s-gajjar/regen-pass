@@ -33,7 +33,7 @@ interface Event {
     description: string;
 }
 
-export const events = [
+export const events: Event[] = [
     {
         slug: 'avail-house',
         date: 'Feb 23',

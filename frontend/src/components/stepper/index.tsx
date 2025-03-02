@@ -146,10 +146,9 @@ export default function VerticalLinearStepper({
 
     const calls = [
         {
-            address: `0x2d2b9bf62b0143a8d68ed4a7063e5f50244dfc81`,
-            abi: ABI,
+            to: `0x2d2b9bf62b0143a8d68ed4a7063e5f50244dfc81`,
             functionName: 'crossChainMint',
-            args: [address, ips, '16015286601757825753', 1],
+            args: [address, ips, '16015286601757825753', 1]
         },
     ];
     const handleOnStatus = React.useCallback((status: LifecycleStatus) => {
