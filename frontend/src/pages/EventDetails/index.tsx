@@ -7,6 +7,7 @@ import VerticalLinearStepper from '../../components/stepper';
 import { Button } from '../../components/ui/button';
 import StarWarsButton from '../../components/ui/startwar-btn';
 import { events } from '../Events';
+import { VerificationModal } from '../../components/VerificationModal';
 
 const getEventDetails = (id: string) => {
     return events.find((event) => event.slug === id);
@@ -16,6 +17,7 @@ export default function EventPage() {
     const [em, setEm] = useState(false);
     const [isUserInRange, setIsUserInRange] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const params = useParams();
     const eventId = params.eventId as string;
     const event = getEventDetails(eventId);
@@ -25,10 +27,16 @@ export default function EventPage() {
 
     const handleVerification = () => {
         toast.dismiss();
-        toast.loading('Verifying email');
-        toast.success('Email verified');
+        setIsModalOpen(true);
+    };
+
+    const handleVerificationSuccess = () => {
+        toast.success('Email verified successfully');
         setEm(true);
         setActiveStep(1);
+        setTimeout(() => {
+            setIsModalOpen(false);
+        }, 1000);
     };
 
     return (
@@ -103,6 +111,13 @@ export default function EventPage() {
                     />
                 </div>
             </div>
+            
+            <VerificationModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                verificationUrl="https://share.reclaimprotocol.org/verifier?template=%7B%22sessionId%22%3A%2221bc9df3-99f4-4d4e-9c40-7c00d9e5e32b%22%2C%22providerId%22%3A%22bee752c9-c41b-44b8-9e3d-d3462bcb3dbc%22%2C%22applicationId%22%3A%220x486dD3B9C8DF7c9b263C75713c79EC1cf8F592F2%22%2C%22signature%22%3A%220xb6d6d630da40ce20e48a399cebc2f71bf582e5e1594b504c0b963615002fa0ae1646d4fd997f7ed13fa35a303d20af3a5f9c88319ebfe290698630bff788d6351b%22%2C%22timestamp%22%3A%221740938612544%22%2C%22callbackUrl%22%3A%22https%3A%2F%2Fapi.reclaimprotocol.org%2Fapi%2Fsdk%2Fcallback%3FcallbackId%3D21bc9df3-99f4-4d4e-9c40-7c00d9e5e32b%22%2C%22context%22%3A%22%7B%5C%22contextAddress%5C%22%3A%5C%220x0%5C%22%2C%5C%22contextMessage%5C%22%3A%5C%22%5C%22%7D%22%2C%22verificationType%22%3A%22WITNESS%22%2C%22parameters%22%3A%7B%7D%2C%22redirectUrl%22%3A%22https%3A%2F%2Fdemo.reclaimprotocol.org%2Fsession%2F21bc9df3-99f4-4d4e-9c40-7c00d9e5e32b%22%7D"
+                onVerificationComplete={handleVerificationSuccess}
+            />
         </div>
     );
 }
