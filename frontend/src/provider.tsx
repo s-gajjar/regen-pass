@@ -6,7 +6,8 @@ import { baseSepolia } from 'wagmi/chains';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { coinbaseWallet } from 'wagmi/connectors';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { ClerkProvider } from '@clerk/clerk-react';
+
 const wagmiConfig = createConfig({
     chains: [baseSepolia],
     connectors: [
@@ -20,6 +21,10 @@ const wagmiConfig = createConfig({
     },
 });
 const queryClient = new QueryClient();
+
+// Clerk publishable key
+const CLERK_PUBLISHABLE_KEY = "pk_test_Z3Jvd24taG9uZXliZWUtNTguY2xlcmsuYWNjb3VudHMuZGV2JA";
+
 const Provider = ({ children }: { children: any }) => {
     const darkTheme = createTheme({
         palette: {
@@ -50,11 +55,7 @@ const Provider = ({ children }: { children: any }) => {
                     },
                 }}
             />
-            <GoogleOAuthProvider
-                clientId={
-                    '1083898684952-op7cr4bf49mvsp0q4j7pbltofkctjksv.apps.googleusercontent.com'
-                }
-            >
+            <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} afterSignOutUrl="/">
                 <WagmiProvider config={wagmiConfig}>
                     <QueryClientProvider client={queryClient}>
                         <OnchainKitProvider
@@ -65,7 +66,7 @@ const Provider = ({ children }: { children: any }) => {
                         </OnchainKitProvider>
                     </QueryClientProvider>
                 </WagmiProvider>
-            </GoogleOAuthProvider>
+            </ClerkProvider>
         </ThemeProvider>
     );
 };

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@clerk/clerk-react": "^5.24.1",
+    "@clerk/nextjs": "^6.12.2",
     "@coinbase/onchainkit": "^0.37.5",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",

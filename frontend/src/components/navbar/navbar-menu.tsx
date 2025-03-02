@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
-import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import useGlobalStorage from '../../store';
+import ClerkAuth from '../ClerkAuth';
 import {
     Address,
     Avatar,
@@ -161,31 +161,8 @@ export function NavbarDemo() {
 
 function Navbar({ className }: { className?: string }) {
     const [active, setActive] = useState<string | null>(null);
-    const navigate = useNavigate();
-    const { setEmail, setName } = useGlobalStorage();
-
-    const handleGoogleLogin = async (credentialResponse: any) => {
-        const idToken = credentialResponse.credential;
-        const userInfo = await fetchUserDetails(idToken);
-        console.log(userInfo);
-        setEmail(userInfo.email);
-        setName(userInfo.given_name);
-        navigate('/events');
-    };
-
-    const fetchUserDetails = async (idToken: string) => {
-        try {
-            const response = await fetch(
-                `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${idToken}`
-            );
-            const userData = await response.json();
-            return userData;
-        } catch (error) {
-            console.error('Error fetching user details:', error);
-            return null;
-        }
-    };
     const { name } = useGlobalStorage();
+    
     return (
         <div
             className={cn(
@@ -196,51 +173,30 @@ function Navbar({ className }: { className?: string }) {
             <Menu setActive={setActive}>
                 <div className="relative">
                     {window.location.pathname === '/' ? (
-                        <button className="inline-flex h-10 sm:h-12 animate-shimmer items-center justify-center rounded-full border border-slate-800 bg-[#0847f7] bg-[length:200%_100%] px-6 sm:px-8 text-sm sm:text-base font-medium text-white transition-all duration-300 hover:scale-105 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-                            Get Started
-                            <div className="opacity-0 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">
-                                <GoogleLogin
-                                    onSuccess={handleGoogleLogin}
-                                    theme="filled_black"
-                                    size="large"
-                                    shape="pill"
-                                    text="signin_with"
-                                    locale="en"
-                                    useOneTap
-                                />
-                            </div>
-                        </button>
+                        <ClerkAuth 
+                            buttonText="Get Started" 
+                            appearance="custom"
+                            className="inline-flex h-10 sm:h-12 animate-shimmer items-center justify-center rounded-full"
+                        />
                     ) : (
                         <div className="flex text-black items-center relative z-10">
+                            <ClerkAuth className="mr-4" />
                             <Wallet className="pl-3">
                                 <ConnectWallet>
                                     <Avatar className="h-6 w-6" />
                                     <Name />
                                 </ConnectWallet>
                                 <WalletDropdown>
-                                    <Identity
-                                        className="px-4 pt-3 pb-2"
-                                        hasCopyAddressOnClick
-                                    >
-                                        <Avatar />
-                                        <Name />
-                                        <Address />
-                                        <EthBalance />
-                                    </Identity>
                                     <WalletDropdownBasename />
                                     <WalletDropdownLink
-                                        icon="wallet"
-                                        href="https://keys.coinbase.com"
+                                        href="/dashboard"
+                                        target="_self"
                                     >
-                                        Wallet
+                                        Dashboard
                                     </WalletDropdownLink>
-                                    <WalletDropdownFundLink />
                                     <WalletDropdownDisconnect />
                                 </WalletDropdown>
-                            </Wallet>{' '}
-                            <div className="text-black ml-4 font-semibold">
-                                Hi, {name}
-                            </div>
+                            </Wallet>
                         </div>
                     )}
                 </div>
