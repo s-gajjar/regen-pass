@@ -146,7 +146,7 @@ export default function VerticalLinearStepper({
 
     const calls = [
         {
-            to: `0x2d2b9bf62b0143a8d68ed4a7063e5f50244dfc81`,
+            to: `0x2d2b9bf62b0143a8d68ed4a7063e5f50244dfc81` as `0x${string}`,
             functionName: 'crossChainMint',
             args: [address, ips, '16015286601757825753', 1]
         },
