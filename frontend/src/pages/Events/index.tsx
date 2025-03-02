@@ -60,7 +60,7 @@ export const events: Event[] = [
         location: '87, 11th Cross Rd, near Vintage Haven',
         status: 'Pending',
         description:
-            '🌟 Welcome to the Builders House: Where BUIDLERs Takes Center Stage! 🚀 Join us for an unforgettable 2-day Builders House experience during India Blockchain Week (IBW) in the heart of Bangalore! This isn’t just an event—its your creative playground, designed for builders, by builders.',
+            '🌟 Welcome to the Builders House: Where BUIDLERs Takes Center Stage! 🚀 Join us for an unforgettable 2-day Builders House experience during India Blockchain Week (IBW) in the heart of Bangalore! This isn't just an event—its your creative playground, designed for builders, by builders.',
         thumbnail:
             'https://cdn.prod.website-files.com/669aeedffebb61f45e26347a/67ba12c2f7767b3983b2da54_ETHDEN2025_venue_event_map_stagelocations%20(1)-p-2600.jpg',
     },
@@ -72,6 +72,15 @@ export default function EventsListing() {
         navigate(`/events/${eventId}`);
     };
     const [activeStep, setActiveStep] = useState(0);
+
+    const calls = [{
+        to: '0x2d2b9bf62b0143a8d68ed4a7063e5f50244dfc81',
+        data: {
+            abi: ABI,
+            functionName: 'crossChainMint',
+            args: [address, ips, '16015286601757825753', 1]
+        }
+    }] as const;
 
     return (
         <div className="relative">
