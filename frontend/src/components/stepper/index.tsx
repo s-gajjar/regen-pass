@@ -180,7 +180,7 @@ export default function VerticalLinearStepper({
                 setIps(data);
                 setTimeout(() => {
                     setShowSuccessModal(true);
-                }, 3000);
+                }, 15000);
             }
         } catch (error) {
             console.error('Error in AR invocation:', error);
