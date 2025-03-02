@@ -1,6 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 import { MapPin, Video } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useAccount } from 'wagmi';
+import { ABI } from '../../abi';
 
 import Navbar from '../../components/navbar';
 import { Button } from '../../components/ui/button';
@@ -8,7 +11,6 @@ import StarWarsButton from '../../components/ui/startwar-btn';
 import { Card, CardContent } from '../../components/ui/cards';
 import Chatbot from '../../components/Chatbot';
 import { NavbarDemo } from '../../components/navbar/navbar-menu';
-import { useState } from 'react';
 import Leaderboard from '../../components/Leaderboard';
 
 interface Host {
@@ -31,7 +33,7 @@ interface Event {
     description: string;
 }
 
-export const events: Event[] = [
+export const events = [
     {
         slug: 'avail-house',
         date: 'Feb 23',
@@ -41,10 +43,8 @@ export const events: Event[] = [
         isLive: true,
         hosts: [{ name: 'Avail Sponsored by Sophon', avatar: '/placeholder.svg' }],
         platform: 'Offline',
-        description:
-            'Avail House is a space for builders to come together and build on Avail. It is a place where builders can learn, build, and grow. It is a place where builders can come together and build on Avail.',
-        thumbnail:
-            'https://7ojanjlhk4.ufs.sh/f/B8IcK6VMfwmn1gGNBaU7ju3IqTJdLOtD2Gvn8sxMCPN56R9F',
+        description: "Avail House is a space for builders to come together and build on Avail. It is a place where builders can learn, build, and grow. It is a place where builders can come together and build on Avail.",
+        thumbnail: 'https://7ojanjlhk4.ufs.sh/f/B8IcK6VMfwmn1gGNBaU7ju3IqTJdLOtD2Gvn8sxMCPN56R9F'
     },
     {
         slug: 'builders-house-at-ibw',
@@ -55,32 +55,30 @@ export const events: Event[] = [
         hosts: [
             { name: 'Sanket', avatar: '/placeholder.svg' },
             { name: 'QuillAI Network', avatar: '/placeholder.svg' },
-            { name: 'Parth', avatar: '/placeholder.svg' },
+            { name: 'Parth', avatar: '/placeholder.svg' }
         ],
         location: '87, 11th Cross Rd, near Vintage Haven',
         status: 'Pending',
-        description:
-            '🌟 Welcome to the Builders House: Where BUIDLERs Takes Center Stage! 🚀 Join us for an unforgettable 2-day Builders House experience during India Blockchain Week (IBW) in the heart of Bangalore! This isn't just an event—its your creative playground, designed for builders, by builders.',
-        thumbnail:
-            'https://cdn.prod.website-files.com/669aeedffebb61f45e26347a/67ba12c2f7767b3983b2da54_ETHDEN2025_venue_event_map_stagelocations%20(1)-p-2600.jpg',
-    },
+        description: "Welcome to the Builders House: Where BUIDLERs Takes Center Stage! Join us for an unforgettable 2-day Builders House experience during India Blockchain Week (IBW) in the heart of Bangalore! This is not just an event—it is your creative playground, designed for builders, by builders.",
+        thumbnail: 'https://cdn.prod.website-files.com/669aeedffebb61f45e26347a/67ba12c2f7767b3983b2da54_ETHDEN2025_venue_event_map_stagelocations%20(1)-p-2600.jpg'
+    }
 ];
 
 export default function EventsListing() {
     const navigate = useNavigate();
+    const { address } = useAccount();
+    const [activeStep, setActiveStep] = useState(0);
+    const [ips, setIps] = useState('');
+
     const handleCheckoutEvent = (eventId: string) => {
         navigate(`/events/${eventId}`);
     };
-    const [activeStep, setActiveStep] = useState(0);
 
     const calls = [{
         to: '0x2d2b9bf62b0143a8d68ed4a7063e5f50244dfc81',
-        data: {
-            abi: ABI,
-            functionName: 'crossChainMint',
-            args: [address, ips, '16015286601757825753', 1]
-        }
-    }] as const;
+        functionName: 'crossChainMint',
+        args: [address || '', ips, '16015286601757825753', 1]
+    }];
 
     return (
         <div className="relative">
